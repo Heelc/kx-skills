@@ -1,1 +1,9 @@
 node_modules
+
+# Agent 工作过程的临时产物（本地保留，不纳入版本控制）
+.pi-subagents/
+findings.md
+progress.md
+task_plan.md
+KX_SKILLS_SUPERPOWERS_RESEARCH.md
+CODEX_COMPATIBILITY_REPORT.md
