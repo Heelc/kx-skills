@@ -1,4 +1,71 @@
-# mattpocock-skills
+# kx-skills
+
+## 2.0.0
+
+### Major Changes
+
+- 将公开的 skill 路由器从 `ask-matt` 重命名为 `ask-kx`，并同步 Claude、Codex、skills.sh、文档、测试与旧软链接清理逻辑。升级后请改用 Codex 的 `kx-skills:ask-kx` 或 Claude Code 的 `/ask-kx`。
+
+- 将 Claude Code 插件对外标识从 `mattpocock-skills`（marketplace `mattpocock`）重命名为 `kx-skills`（marketplace `heelc`），与已完成改名的 Codex 侧对齐，并同步 `package.json`、`.claude-plugin/plugin.json`、`.claude-plugin/marketplace.json` 与 README 安装命令。破坏性变更：已用旧名安装的用户需先卸载再以新名重新安装 —— Claude Code `/plugin install kx-skills@heelc`。
+
+- 将公开的 run-once setup skill 从 `setup-matt-pocock-skills` 重命名为 `setup-kx-skills`，并同步 Claude、Codex、skills.sh、文档与测试入口。升级后旧命令不再是现行接口；请确认新 skill 可用后再删除旧的实体副本或书签。
+
+## 1.2.0
+
+### Minor Changes
+
+- 697d4ce: 在 canonical skill 旁新增 Codex 元数据，使 Claude Code 与 Codex 共享同一份行为源码；Codex 插件的安装包由 canonical 源码生成，不维护第二份手写副本。
+
+  - Add an `agents/openai.yaml` beside every `SKILL.md` with Codex UI metadata (`interface.display_name`, `interface.short_description`).
+  - Mark every user-invoked skill with `policy.allow_implicit_invocation: false`, the Codex analog of `disable-model-invocation: true`, so Codex excludes it from implicit invocation while explicit `$skill` invocation still works.
+  - Document the dual-harness invocation model in `.agents/invocation.md`, `CLAUDE.md`, and the promoted-bucket READMEs.
+  - Add `AGENTS.md` as a symlink to `CLAUDE.md` so Codex reads the same repo instructions.
+
+- cdec9f6: Reword how the **`prototype`** skill handles its artifacts around a single idea: **the prototype is a primary source**. Rather than being deleted once it's answered its question, the prototype is captured as runnable evidence on a throwaway branch (`prototype/<name>`) out of main, with a context pointer to it left on the implementation issue — so the main branch keeps only the validated decision while the exploration stays findable. The answer (verdict + question) is still captured durably in an issue/ADR/commit.
+- 42a5b70: Ship the skill set as a native **Claude Code plugin**. The repo is now its own single-plugin marketplace, so you can subscribe to the promoted skills as a managed, read-only bundle instead of copying editable files:
+
+  ```
+  /plugin marketplace add mattpocock/skills
+  /plugin install mattpocock-skills@mattpocock
+  ```
+
+  `.claude-plugin/plugin.json` gains full marketplace metadata (version, description, author, license, keywords) and a sibling `.claude-plugin/marketplace.json` lists the plugin. `skills.sh` remains the editable-copy installer. The earlier Codex deferral in ADR 0002 is superseded in this release by ADR 0003 and the generated `kx-skills` Codex plugin described below.
+
+- 发布包含且仅包含 22 个正式 skills 的 `kx-skills` Codex 原生插件，同时保留 Claude Code plugin。
+
+  - 新增生成式 Codex 分发镜像、仓库 marketplace 与防漂移构建检查。
+  - 为 22 个 skills 补齐 Codex 默认提示词，并保持 13 个仅显式调用、9 个可隐式调用。
+  - 移除 Claude 专属调用与固定工具名称，补齐 Codex 子代理串行降级、tracker 本地 Markdown 保底和高影响副作用授权门禁。
+  - 同步安装迁移文档、双平台调用规范与兼容性报告。
+
+- 2602257: Wayfinder now burns research tickets down with independent research passes instead of leaving them parked for a separately-launched session.
+
+  Research stays a real ticket type — it's a genuine shared blocker that downstream decisions hang on. When Codex collaboration is available, charting delegates each ticket to an independent `research` sub-agent in parallel; restricted environments use isolated serial passes. Creating a throwaway `research/<name>` branch, committing findings, or posting a context pointer now requires explicit authorization. Research tickets remain the one exception to _one ticket per session_.
+
+- 45afd80: Add a YAGNI scoping filter to the **`improve-codebase-architecture`** skill's Explore step. Instead of scanning the whole repo evenly, it now scopes to where change is actually landing: if you name a direction it takes it, otherwise it reads the last ~20 commit messages to bias exploration toward actively-developed paths. A deepening opportunity in code nobody touches is a refactor you'll never cash in — the leverage only pays off where you keep editing — so the report stops tidying dormant corners of the repo.
+
+### Patch Changes
+
+- e74fee8: Make `/ask-matt` clued-up about `/wayfinder` — the heaviest, most cognitively demanding flow.
+
+  The router now sharpens the two routing mistakes people most often make with wayfinder:
+
+  - **Over-reaching for it.** It's slower and denser than a single grill, so it's flagged as the heaviest flow and reserved for the idea that genuinely won't fit one session — a well-scoped feature belongs on `/grill-with-docs`, not here.
+  - **Losing the way at the handoff.** When the map clears, wayfinder hands off, it doesn't build: merge onto the main flow at `/to-spec` (which collapses the map's linked decisions into a buildable plan) rather than looping the map straight into `/implement`. Straight-to-`/implement` is only for efforts that turned out genuinely small.
+
+- 44eed54: Make `/setup-matt-pocock-skills` friendlier and align the local-markdown tracker with the current spec.
+
+  - **Triage labels** are now asked about only when the `triage` skill is installed, and then as a single recommended-yes question ("keep the default triage labels?") instead of an override interrogation. When `triage` isn't installed, the section — and `docs/agents/triage-labels.md` — are skipped.
+  - **External PRs as a request surface** is no longer a setup question. The GitHub/GitLab templates still carry the flag, defaulted off; a user can flip it in `docs/agents/issue-tracker.md` later.
+  - **Domain docs** default to single-context without asking; multi-context is only offered when the repo shows monorepo signals.
+  - **Local-markdown tickets** are now one file per ticket under `.scratch/<feature>/issues/<NN>-<slug>.md` — never a single combined `tickets.md`. `/to-tickets` and the local issue-tracker template now agree, and the spec file is `spec.md` (not `PRD.md`) to match `/to-spec`.
+
+  Docs pages for `setup-matt-pocock-skills` and `to-tickets` re-synced.
+
+- 170ad48: Reword **`grilling`** for general use. Its description and body no longer scope the interview to a software plan: "this plan" → "this", "enact the plan" → "act on it", and "exploring the codebase" → "exploring the environment". The technique is unchanged; it now reads as a stress-test of any plan, decision, or idea.
+- 7d694b7: Name the `/wayfinder` unit a **decision ticket**.
+
+  People kept reading a wayfinder ticket as an ordinary _implementation_ ticket — a slice of a build to execute — when wayfinder uses them as **decision tickets**: questions whose resolution is a decision. The skill description and its opening line now introduce "decision ticket" (and say what makes it one), and the `ask-matt` / engineering README wayfinder blurbs and the docs page match — while "ticket" stays the everyday word once the term is established. `CONTEXT.md` records **Decision ticket** as a domain term so the "avoid: ticket" guidance no longer contradicts wayfinder's deliberate use of the word.
 
 ## 1.1.0
 

@@ -10,7 +10,7 @@
 
 # Skills For Real Engineers
 
-[![skills.sh](https://skills.sh/b/mattpocock/skills)](https://skills.sh/mattpocock/skills)
+[![skills.sh](https://skills.sh/b/Heelc/kx-skills)](https://skills.sh/Heelc/kx-skills)
 
 My agent skills that I use every day to do real engineering - not vibe coding.
 
@@ -27,12 +27,12 @@ If you want to keep up with changes to these skills, and any new ones I create, 
 1. Run the skills.sh installer:
 
 ```bash
-npx skills@latest add mattpocock/skills
+npx skills@latest add Heelc/kx-skills
 ```
 
-2. Pick the skills you want, and which coding agents you want to install them on. **Make sure you select `/setup-matt-pocock-skills`**.
+2. Pick the skills you want, and which coding agents you want to install them on. **Make sure you select `setup-kx-skills`**.
 
-3. Run `/setup-matt-pocock-skills` in your agent. It will:
+3. Explicitly run `setup-kx-skills` in your agent. In Codex, type `$` and select the skill; in Claude Code, run `/setup-kx-skills`. It will:
    - Ask you which issue tracker you want to use (GitHub, Linear, or local files)
    - Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
    - Ask you where you want to save any docs we create
@@ -46,25 +46,65 @@ Prefer a plug-and-play install you don't maintain by hand? These skills also shi
 Inside Claude Code:
 
 ```
-/plugin marketplace add mattpocock/skills
-/plugin install mattpocock-skills@mattpocock
+/plugin marketplace add Heelc/kx-skills
+/plugin install kx-skills@heelc
 ```
 
 Or from your shell:
 
 ```bash
-claude plugin marketplace add mattpocock/skills
-claude plugin install mattpocock-skills@mattpocock
+claude plugin marketplace add Heelc/kx-skills
+claude plugin install kx-skills@heelc
 ```
 
-Then run `/setup-matt-pocock-skills` once per repo, exactly as in the quickstart above.
+Then run `/setup-kx-skills` once per repo, exactly as in the quickstart above.
 
 Two ways to install, two philosophies:
 
-- **[skills.sh](https://skills.sh/mattpocock/skills)** copies the skills into your project so you can hack on them and make them your own.
+- **[skills.sh](https://skills.sh/Heelc/kx-skills)** copies this distribution's canonical skills into your project so you can hack on them and make them your own.
 - **The plugin** keeps them as a read-only, always-current bundle you don't edit — best when you just want my set to work and follow along as it evolves.
 
-> Using Codex or another agent? The [skills.sh installer](https://skills.sh/mattpocock/skills) already installs these skills into Codex and other Agent-Skills-standard harnesses today. A native Codex plugin is on the roadmap — see [`.agents/adr/0002-ship-as-a-claude-code-plugin.md`](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
+## Install as a Codex plugin
+
+Codex 用户可以把 22 个正式 skills 作为托管插件安装。插件只包含 `engineering/` 与 `productivity/` 两个 promoted bucket，不包含草稿、个人或废弃 skills。
+
+```bash
+codex plugin marketplace add Heelc/kx-skills
+codex plugin add kx-skills@heelc
+```
+
+安装后新建任务，在输入框键入 `$`，选择 `kx-skills:<skill-name>`。13 个 user-invoked skills 只会在用户显式选择时加载；其余 9 个 model-invoked skills 也可以按任务语义自动触发。
+
+首次安装后请在 Codex 桌面端目视确认插件卡片已启用、22 个 skills 可见，并分别试选一个 user-invoked 与 model-invoked skill。CLI 验证不能替代这一步桌面 UI 检查。
+
+升级 marketplace 并重新安装当前版本：
+
+```bash
+codex plugin marketplace upgrade heelc
+codex plugin add kx-skills@heelc
+```
+
+卸载与回滚：
+
+```bash
+codex plugin remove kx-skills@heelc
+codex plugin marketplace remove heelc
+```
+
+两种 Codex 安装方式面向不同需求：
+
+- **[skills.sh](https://skills.sh/Heelc/kx-skills)** 从本仓库复制可编辑副本，适合自行定制。
+- **`kx-skills` plugin** 安装托管分发包，适合跟随仓库版本更新；不要直接编辑 `plugins/kx-skills/skills/`，它由 `scripts/build-codex-plugin.mjs` 从 canonical 源码生成。
+
+若旧 skills.sh 副本与插件同名并存，先在选择器中明确选择 `kx-skills:<name>`。确认迁移完成后，再手动禁用或删除旧副本；安装插件不会自动删除用户已有 skill。
+
+### 从旧 setup skill 迁移
+
+`setup-kx-skills` 已取代 `setup-matt-pocock-skills`。升级后请改用 Codex 的 `kx-skills:setup-kx-skills` 或 Claude Code 的 `/setup-kx-skills`；旧命令和旧文档 URL 不再是现行接口。skills.sh 或手工复制的用户先确认新 skill 可用，再删除旧实体副本。维护者重新运行 `scripts/link-skills.sh` 时，脚本只会自动清理指向本仓库旧 canonical 路径的软链接，不会删除用户文件或其他来源的 skill。
+
+### 从旧 router skill 迁移
+
+`ask-kx` 已取代 `ask-matt`。升级后请改用 Codex 的 `kx-skills:ask-kx` 或 Claude Code 的 `/ask-kx`；skills.sh 或手工复制的用户确认新入口可用后，再删除旧实体副本或书签。维护者脚本同样只清理指向本仓库旧 canonical 路径的软链接。
 
 ## Why These Skills Exist
 
@@ -176,11 +216,11 @@ Skills I use daily for code work.
 
 **User-invoked**
 
-- **[ask-matt](./skills/engineering/ask-matt/SKILL.md)** — Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
+- **[ask-kx](./skills/engineering/ask-kx/SKILL.md)** — Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)** — Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
 - **[triage](./skills/engineering/triage/SKILL.md)** — Move issues through a state machine of triage roles.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)** — Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the other engineering skills.
+- **[setup-kx-skills](./skills/engineering/setup-kx-skills/SKILL.md)** — Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the other engineering skills.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)** — Turn the current conversation into a spec and publish it to the issue tracker. No interview — just synthesizes what you've already discussed.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)** — Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges — written as text in a local file, or as native blocking links on a real tracker.
 - **[implement](./skills/engineering/implement/SKILL.md)** — Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing.

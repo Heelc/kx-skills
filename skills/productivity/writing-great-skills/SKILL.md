@@ -10,12 +10,14 @@ A skill exists to wrangle determinism out of a stochastic system. **Predictabili
 
 ## Invocation
 
-Two choices, trading different costs:
+Two choices, trading different costs. Every cross-platform `SKILL.md` keeps the required `name` and `description`; invocation policy, not deletion of metadata, decides who may start it:
 
-- A **model-invoked** skill keeps a **description**, so the agent can fire it autonomously _and_ other skills can reach it (you can still type its name too). It contributes to **context load** — the description sits in the window every turn. Mechanics: omit `disable-model-invocation`, and write a model-facing description with rich trigger phrasing ("Use when the user wants…, mentions…").
-- A **user-invoked** skill strips the description from the agent's reach: only you, typing its name, can invoke it — and no other skill can. Zero context load, but it spends **cognitive load**: _you_ are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing — a one-line summary, trigger lists stripped.
+- A **model-invoked** skill has a model-facing **description**, so the agent can fire it autonomously _and_ other skills can reach it (the human can still select it explicitly). It contributes to **context load** because the harness exposes that description to the model. For Claude Code, omit `disable-model-invocation`. For Codex, omit `policy.allow_implicit_invocation: false` from `agents/openai.yaml`. Give Codex an `interface.default_prompt` that explicitly names `$<skill-name>`.
+- A **user-invoked** skill is visible in the human's selector but excluded from implicit model invocation. Only the human may start it; another skill may recommend it but must not invoke it. This spends **cognitive load** because the human is the index. For Claude Code, set `disable-model-invocation: true`. For Codex, set `policy.allow_implicit_invocation: false` in `agents/openai.yaml`. Keep its description concise and human-facing, and still provide a `$<skill-name>` `default_prompt`.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and keep it out of the implicit skill context.
+
+Cross-skill prose should say “invoke the skill named `<name>`”. Do not hard-code Claude slash commands or a Codex plugin namespace into shared source. At runtime, Codex users type `$` and choose the installed skill; plugin-provided skills may be displayed as `<plugin>:<skill>` to disambiguate names.
 
 When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
 

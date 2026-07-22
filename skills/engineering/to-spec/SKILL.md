@@ -6,9 +6,11 @@ disable-model-invocation: true
 
 This skill takes the current conversation context and codebase understanding and produces a spec (you may know this document as a PRD). Do NOT interview the user — just synthesize what you already know.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+The issue tracker and triage label vocabulary should have been provided to you. Treat missing configuration as a hard stop: ask the user to explicitly invoke the user-only `setup-kx-skills` skill, then end this run without exploring or writing the spec. A configured remote tracker becoming unavailable may fall back to local Markdown after confirmation; missing configuration never implies the local backend.
 
 ## Process
+
+0. Read `docs/agents/issue-tracker.md` and the configured triage-label vocabulary before any other action. If either required file is absent, stop immediately with the explicit setup instruction above.
 
 1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
 
@@ -16,7 +18,7 @@ The issue tracker and triage label vocabulary should have been provided to you �
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. Write the spec using the template below. For a local-markdown tracker, show the destination path and write the approved artifact there. For a remote tracker, show the complete draft, target repository/project, proposed title, label changes, and exact write operations; publish and apply the `ready-for-agent` triage label only after the user explicitly authorizes those remote writes. Prefer an available connector, otherwise use an authenticated CLI. If neither is available, offer to save the spec as local markdown instead of pretending it was published.
 
 <spec-template>
 

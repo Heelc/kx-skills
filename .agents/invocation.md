@@ -7,13 +7,15 @@ Every `SKILL.md` in this repo is a skill. The one axis that splits them is **inv
 
 Each harness excludes a user-invoked skill from the model's reach in its own way, so nothing but the human can fire it — no other skill can. A user-invoked skill may invoke model-invoked skills, but it can never reach another user-invoked skill.
 
-Every skill also carries an `agents/openai.yaml` beside its `SKILL.md`. It holds Codex UI metadata — `interface.display_name` and `interface.short_description` for the skill picker — and, for user-invoked skills, the `policy.allow_implicit_invocation: false` that pairs with `disable-model-invocation`. Keep the two in sync: a skill is user-invoked in both harnesses or neither.
+Every skill also carries an `agents/openai.yaml` beside its `SKILL.md`. It holds Codex UI metadata — `interface.display_name`, `interface.short_description`, and an `interface.default_prompt` that explicitly references the corresponding `$<skill-name>` — and, for user-invoked skills, the `policy.allow_implicit_invocation: false` that pairs with `disable-model-invocation`. Keep the two in sync: a skill is user-invoked in both harnesses or neither.
 
 Bucket `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**.
 
 ## Dependencies between them
 
-Dependencies are expressed as **`/skill`-style prose invocation** ("Run the `/grilling` skill"), not deep `../other-skill/FILE.md` cross-references. Shared reference docs live inside the skill that owns them; other skills reach that material by invoking the skill, not by linking across folders.
+Dependencies are expressed as platform-neutral prose ("invoke the skill named `grilling`"), not Claude slash commands, Codex plugin namespaces, or deep `../other-skill/FILE.md` cross-references. At runtime, Claude Code users can type `/grilling`; Codex users type `$` and select the skill, which a plugin may display as `<plugin>:<skill>`. Shared reference docs live inside the skill that owns them; other skills reach that material by invoking the skill, not by linking across folders.
+
+A skill must never automatically invoke a user-invoked skill. It may stop and tell the human to select that skill explicitly.
 
 ## Passive vs active domain work
 

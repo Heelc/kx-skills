@@ -41,6 +41,15 @@ for DEST in "${DESTS[@]}"; do
 
   mkdir -p "$DEST"
 
+  for legacy_name in setup-matt-pocock-skills ask-matt; do
+    legacy_target="$DEST/$legacy_name"
+    legacy_source="$REPO/skills/engineering/$legacy_name"
+    if [ -L "$legacy_target" ] && [ "$(readlink "$legacy_target")" = "$legacy_source" ]; then
+      rm "$legacy_target"
+      echo "已移除退役的 $legacy_name 软链接（$DEST）"
+    fi
+  done
+
   for i in "${!names[@]}"; do
     name="${names[$i]}"
     src="${srcs[$i]}"

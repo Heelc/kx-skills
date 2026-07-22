@@ -1,14 +1,21 @@
 Quickstart:
 
 ```bash
-npx skills add mattpocock/skills --skill=codebase-design
+npx skills add Heelc/kx-skills --skill=codebase-design
 ```
 
 ```bash
 npx skills update codebase-design
 ```
 
-[Source](https://github.com/mattpocock/skills/tree/main/skills/engineering/codebase-design)
+Codex 原生插件用户先安装 marketplace 与插件：
+
+```bash
+codex plugin marketplace add Heelc/kx-skills
+codex plugin add kx-skills@heelc
+```
+
+[Source](https://github.com/Heelc/kx-skills/tree/main/skills/engineering/codebase-design)
 
 ## What it does
 
@@ -18,7 +25,7 @@ It is a **language, not a procedure**. It doesn't restructure your code or hand 
 
 ## When to reach for it
 
-Type `/codebase-design`, or the agent reaches for it automatically when a task fits.
+在 Codex 中可输入 `$` 并选择 `kx-skills:codebase-design`，在 Claude Code 中可输入 `/codebase-design`；任务匹配时，模型也可以隐式触发该 skill。
 
 Reach for it when you're designing or improving a module's interface, hunting for deepening opportunities, deciding where a seam goes, or making code more testable and AI-navigable. Other skills pull it in whenever they need the deep-module vocabulary. If you want to sharpen the project's *domain* terms rather than its module design, use [domain-modeling](https://aihero.dev/skills-domain-modeling) instead; to run a whole architecture pass over an existing codebase, use [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture).
 
@@ -40,4 +47,4 @@ The point of keeping it standalone is that you can also reach for it on its own 
 
 ## Where it fits
 
-`codebase-design` is a **reach-for-it-anytime standalone** — the shared vocabulary layer under the engineering skills. Its closest neighbour is [domain-modeling](https://aihero.dev/skills-domain-modeling), the parallel vocabulary skill for the problem domain rather than the module structure. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`codebase-design` is a **reach-for-it-anytime standalone** — the shared vocabulary layer under the engineering skills. Its closest neighbour is [domain-modeling](https://aihero.dev/skills-domain-modeling), the parallel vocabulary skill for the problem domain rather than the module structure. When you're unsure which skill or flow fits, [ask-kx](https://aihero.dev/skills-ask-kx) routes you.

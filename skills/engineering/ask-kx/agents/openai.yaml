@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ask KX"
+  short_description: "Find the right skill or workflow"
+  default_prompt: "使用 $ask-kx 为当前任务选择最合适的 skill 和工作流。"
+policy:
+  allow_implicit_invocation: false

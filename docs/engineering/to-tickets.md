@@ -1,30 +1,37 @@
 Quickstart:
 
 ```bash
-npx skills add mattpocock/skills --skill=to-tickets
+npx skills add Heelc/kx-skills --skill=to-tickets
 ```
 
 ```bash
 npx skills update to-tickets
 ```
 
-[Source](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-tickets)
+Codex 原生插件用户先安装 marketplace 与插件：
+
+```bash
+codex plugin marketplace add Heelc/kx-skills
+codex plugin add kx-skills@heelc
+```
+
+[Source](https://github.com/Heelc/kx-skills/tree/main/skills/engineering/to-tickets)
 
 ## What it does
 
-`to-tickets` breaks a plan, spec, or the current conversation into a set of **tickets** — each a tracer-bullet vertical slice — and publishes them to your configured tracker, with every ticket declaring the tickets that block it.
+`to-tickets` 将计划、规格或当前对话拆成一组 **tickets**，每个 ticket 都是 tracer-bullet 垂直切片，并声明阻塞关系。它先让用户批准拆分结果和目标后端；远端创建、标签与依赖写入必须再次展示并取得明确授权。
 
 Every ticket is a **tracer bullet** — a thin *vertical* slice that cuts through all integration layers end-to-end (schema, API, UI, tests), never a horizontal slice of one layer. A completed slice is demoable or verifiable on its own, which is what makes each ticket safe to hand to an agent.
 
 ## When to reach for it
 
-You invoke this by typing `/to-tickets` — the agent won't reach for it on its own.
+在 Codex 中输入 `$` 并选择 `kx-skills:to-tickets`；在 Claude Code 中输入 `/to-tickets`。该 skill 只能由用户显式启动。
 
 Reach for it once you have an agreed plan or a written spec and you want it split into tickets. Point it at the conversation, or pass a spec or issue reference and it fetches the body and comments first. If the change hasn't been written up as a spec yet, produce one first — for that, use [to-spec](https://aihero.dev/skills-to-spec).
 
 ## Prerequisites
 
-`to-tickets` publishes into your issue tracker, so [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) must have configured the tracker and its triage label vocabulary for this repo first. On a real tracker it applies the ready-for-agent label as it publishes.
+`to-tickets` 依赖 [setup-kx-skills](https://aihero.dev/skills-setup-kx-skills) 配置 tracker 和标签。缺少配置时会停止并提示用户显式运行 setup。远端后端按 connector→已认证 CLI 选择；均不可用时，经用户确认后为每个 ticket 写一个本地 Markdown 文件。
 
 ## One artifact, two readings
 
@@ -53,4 +60,4 @@ One shape breaks the tracer-bullet rule: a **wide refactor** — a single mechan
 grill-with-docs → to-spec → to-tickets → implement → code-review
 ```
 
-It sits between [to-spec](https://aihero.dev/skills-to-spec), which hands it a settled spec with user stories to slice against, and [implement](https://aihero.dev/skills-implement), which builds each ticket, driving [tdd](https://aihero.dev/skills-tdd) internally to write the tests test-first, before its [code-review](https://aihero.dev/skills-code-review) pass. Work the frontier one ticket per fresh context, clearing between them. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+它位于 [to-spec](https://aihero.dev/skills-to-spec) 与 [implement](https://aihero.dev/skills-implement) 之间。每个 frontier ticket 都应在 fresh task 中由用户显式选择 user-only 的 `implement`，本 skill 不会自动启动它；`implement` 再调用 [tdd](https://aihero.dev/skills-tdd) 和 [code-review](https://aihero.dev/skills-code-review)。不确定流程时由 [ask-kx](https://aihero.dev/skills-ask-kx) 路由。
