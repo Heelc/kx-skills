@@ -1,14 +1,21 @@
 Quickstart:
 
 ```bash
-npx skills add mattpocock/skills --skill=wayfinder
+npx skills add Heelc/kx-skills --skill=wayfinder
 ```
 
 ```bash
 npx skills update wayfinder
 ```
 
-[Source](https://github.com/mattpocock/skills/tree/main/skills/engineering/wayfinder)
+Codex 原生插件用户先安装 marketplace 与插件：
+
+```bash
+codex plugin marketplace add Heelc/kx-skills
+codex plugin add kx-skills@heelc
+```
+
+[Source](https://github.com/Heelc/kx-skills/tree/main/skills/engineering/wayfinder)
 
 ## What it does
 
@@ -16,13 +23,13 @@ npx skills update wayfinder
 
 ## When to reach for it
 
-You invoke this by typing `/wayfinder` — the agent won't reach for it on its own.
+在 Codex 中输入 `$` 并选择 `kx-skills:wayfinder`；在 Claude Code 中输入 `/wayfinder`。该 skill 只能由用户显式启动。
 
 Reach for it when an effort is **more than one agent session can hold** and the route to its **destination** is still foggy — you can feel the shape of the work but can't yet write it down as a spec or a plan. For turning an *already-clear* thread into a spec, use [to-spec](https://aihero.dev/skills-to-spec); for slicing an already-understood plan into buildable tickets, use [to-tickets](https://aihero.dev/skills-to-tickets). Wayfinder sits upstream of both: it's what you run when there's too much fog to spec directly.
 
 ## Prerequisites
 
-The map and its tickets live on the repo's issue tracker, so wayfinder needs the tracker wiring that [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) lays down — it seeds a "Wayfinding operations" section describing how the map, child tickets, blocking, and frontier queries are expressed for GitHub, GitLab, or local-markdown. Absent that doc, wayfinder defaults to a local-markdown map.
+The map and its tickets live on the repo's issue tracker, so wayfinder needs the tracker wiring that [setup-kx-skills](https://aihero.dev/skills-setup-kx-skills) lays down — it seeds a "Wayfinding operations" section describing how the map, child tickets, blocking, and frontier queries are expressed for GitHub, GitLab, or local-markdown. Absent that doc, wayfinder defaults to a local-markdown map.
 
 ## The map is an index, fog is the frontier
 
@@ -30,7 +37,7 @@ The **map** is a single `wayfinder:map` issue whose tickets are its child issues
 
 Beyond the live tickets lies the **fog of war** — decisions you can tell are coming but can't yet pin down. The test for whether something is a ticket or still fog is whether you can *state the question precisely now*, not whether you can answer it. Resolving a ticket clears the fog ahead of it, **graduating** whatever's now specifiable into fresh tickets. The **frontier** is the open, unblocked, unclaimed tickets — the edge of the known — and it's what the tracker's native blocking renders visually, so you see what's takeable without opening the map. Fog only gathers *toward* the **destination**; work past it is ruled **out of scope**, closed, never graduating.
 
-Every ticket is **HITL** (human in the loop — grilling, prototype) or **AFK** (agent alone — research); a HITL ticket only resolves through a live exchange, so the agent never answers its own questions. Research stays a real ticket — a shared blocker downstream decisions hang on — but because it's AFK, a session doesn't stop and read: it fires a `/research` **subagent** to burn the ticket down in parallel, keeping the frontier fast, and captures the findings on a throwaway `research/<name>` branch.
+每个 ticket 都是 **HITL**（grilling、prototype）或 **AFK**（research）。研究 ticket 在 Codex 支持协作时由独立子代理并行处理，不支持时串行降级。创建 `research/<name>` 分支、commit、远端建票、assignment、comment、close 和依赖更新前，都会先展示动作并取得明确授权；未授权时保留本地未提交 Markdown 并返回绝对路径。
 
 ## It's working if
 
@@ -41,4 +48,4 @@ Every ticket is **HITL** (human in the loop — grilling, prototype) or **AFK** 
 
 ## Where it fits
 
-`wayfinder` is a big-idea **on-ramp**: an effort too large and foggy to spec in one sitting generates a cleared map of decisions, which then merges onto the main build flow. When the fog is pushed back and the way is clear, hand off to [to-spec](https://aihero.dev/skills-to-spec) to schedule the multi-session build (or, if the effort turned out small, implement directly). It leans on [grilling](https://aihero.dev/skills-grilling) and [domain-modeling](https://aihero.dev/skills-domain-modeling) to resolve individual tickets, and on [prototype](https://aihero.dev/skills-prototype) and [research](https://aihero.dev/skills-research) for the ticket types that need them. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`wayfinder` is a big-idea **on-ramp**: an effort too large and foggy to spec in one sitting generates a cleared map of decisions, which then merges onto the main build flow. When the fog is pushed back and the way is clear, hand off to [to-spec](https://aihero.dev/skills-to-spec) to schedule the multi-session build (or, if the effort turned out small, implement directly). It leans on [grilling](https://aihero.dev/skills-grilling) and [domain-modeling](https://aihero.dev/skills-domain-modeling) to resolve individual tickets, and on [prototype](https://aihero.dev/skills-prototype) and [research](https://aihero.dev/skills-research) for the ticket types that need them. When you're unsure which skill or flow fits, [ask-kx](https://aihero.dev/skills-ask-kx) routes you.

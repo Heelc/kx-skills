@@ -1,14 +1,21 @@
 Quickstart:
 
 ```bash
-npx skills add mattpocock/skills --skill=teach
+npx skills add Heelc/kx-skills --skill=teach
 ```
 
 ```bash
 npx skills update teach
 ```
 
-[Source](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach)
+Codex 原生插件用户先安装 marketplace 与插件：
+
+```bash
+codex plugin marketplace add Heelc/kx-skills
+codex plugin add kx-skills@heelc
+```
+
+[Source](https://github.com/Heelc/kx-skills/tree/main/skills/productivity/teach)
 
 ## What it does
 
@@ -18,7 +25,7 @@ It does **not** teach from the model's own memory. Parametric knowledge is treat
 
 ## When to reach for it
 
-You invoke this by typing `/teach` — the agent won't reach for it on its own.
+在 Codex 中输入 `$` 并选择 `kx-skills:teach`；在 Claude Code 中输入 `/teach`。该 skill 只能由用户显式启动。
 
 Reach for it when you want to *learn* a topic over time — a language, a framework, yoga, theoretical physics — and want the sessions to accumulate rather than evaporate. It is not for a one-off explanation; if you just need something clarified in the moment, ask directly. Reach for `teach` when the learning is a project.
 
@@ -44,4 +51,4 @@ The word to think with is **storage strength** — long-term retention — as op
 
 ## Where it fits
 
-`teach` is a reach-for-it-anytime standalone — a long-running learning project you drive session by session, not a step in a build chain. It shares no workflow with the other productivity skills; it simply owns its workspace directory and lives there. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`teach` is a reach-for-it-anytime standalone — a long-running learning project you drive session by session, not a step in a build chain. It shares no workflow with the other productivity skills; it simply owns its workspace directory and lives there. When you're unsure which skill or flow fits, [ask-kx](https://aihero.dev/skills-ask-kx) routes you.

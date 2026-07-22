@@ -1,14 +1,21 @@
 Quickstart:
 
 ```bash
-npx skills add mattpocock/skills --skill=domain-modeling
+npx skills add Heelc/kx-skills --skill=domain-modeling
 ```
 
 ```bash
 npx skills update domain-modeling
 ```
 
-[Source](https://github.com/mattpocock/skills/tree/main/skills/engineering/domain-modeling)
+Codex 原生插件用户先安装 marketplace 与插件：
+
+```bash
+codex plugin marketplace add Heelc/kx-skills
+codex plugin add kx-skills@heelc
+```
+
+[Source](https://github.com/Heelc/kx-skills/tree/main/skills/engineering/domain-modeling)
 
 ## What it does
 
@@ -18,7 +25,7 @@ This is the **active** discipline, not the passive one. Merely reading `CONTEXT.
 
 ## When to reach for it
 
-Type `/domain-modeling`, or the agent reaches for it automatically when a task fits — when you are pinning down terminology, resolving an overloaded word, or recording an architectural decision.
+在 Codex 中可输入 `$` 并选择 `kx-skills:domain-modeling`，在 Claude Code 中可输入 `/domain-modeling`；任务匹配时，模型也可以隐式触发该 skill。
 
 Reach for it when the *words* are the problem: two people mean different things by "cancellation", "account" is doing three jobs, or a design conversation keeps snagging on a concept that has never been named precisely. If instead the module's *shape* is the problem — where the seam goes, how deep the interface is — use [codebase-design](https://aihero.dev/skills-codebase-design). If you want the plan itself interrogated before you build, use [grilling](https://aihero.dev/skills-grilling).
 
@@ -43,4 +50,4 @@ Keeping it standalone means you can also reach for it directly — as a **refere
 
 ## Where it fits
 
-`domain-modeling` is a **reach-for-it-anytime standalone** that runs *underneath* other skills as often as at a fixed step. Its closest neighbour is [codebase-design](https://aihero.dev/skills-codebase-design), because a shared language is what lets you name a deep module and its seam precisely; downstream, a settled glossary is exactly what [to-spec](https://aihero.dev/skills-to-spec) synthesises into a spec written in the project's own words. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`domain-modeling` is a **reach-for-it-anytime standalone** that runs *underneath* other skills as often as at a fixed step. Its closest neighbour is [codebase-design](https://aihero.dev/skills-codebase-design), because a shared language is what lets you name a deep module and its seam precisely; downstream, a settled glossary is exactly what [to-spec](https://aihero.dev/skills-to-spec) synthesises into a spec written in the project's own words. When you're unsure which skill or flow fits, [ask-kx](https://aihero.dev/skills-ask-kx) routes you.

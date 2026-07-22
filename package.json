@@ -1,14 +1,18 @@
 {
-  "name": "mattpocock-skills",
-  "version": "1.1.0",
+  "name": "kx-skills",
+  "version": "2.0.0",
   "private": true,
-  "description": "Matt Pocock's agent skills for real engineering",
+  "description": "Agent skills for real engineering",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mattpocock/skills"
+    "url": "https://github.com/Heelc/kx-skills"
   },
   "license": "MIT",
   "scripts": {
+    "build:codex-plugin": "node scripts/build-codex-plugin.mjs",
+    "check:codex-plugin": "node scripts/build-codex-plugin.mjs --check",
+    "test:codex-compatibility": "node scripts/test-codex-compatibility.mjs",
+    "test:codex-behavior": "node scripts/test-codex-behavior.mjs",
     "changeset": "changeset",
     "version": "changeset version"
   },

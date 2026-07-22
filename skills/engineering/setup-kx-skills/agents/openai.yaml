@@ -1,0 +1,6 @@
+interface:
+  display_name: "Setup KX Skills"
+  short_description: "Configure a repo for the skills"
+  default_prompt: "使用 $setup-kx-skills 为当前仓库配置 tracker 和领域文档。"
+policy:
+  allow_implicit_invocation: false

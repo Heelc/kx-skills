@@ -1,0 +1,20 @@
+{
+  "name": "heelc",
+  "interface": {
+    "displayName": "Heelc Codex Plugins"
+  },
+  "plugins": [
+    {
+      "name": "kx-skills",
+      "source": {
+        "source": "local",
+        "path": "./plugins/kx-skills"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

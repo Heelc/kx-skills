@@ -6,7 +6,7 @@ Most of these skills are **user-invoked**: the agent will never fire them for yo
 
 Act whenever a promoted skill is added, renamed, or has its behaviour changed: create or re-sync its docs page. A rename moves the file too (`docs/<bucket>/<old>.md` → `docs/<bucket>/<new>.md`), because the published URL tracks the name; a skill that moves between `engineering/` and `productivity/` moves its docs file to the matching folder. Skills in `misc/`, `personal/`, `in-progress/`, and `deprecated/` get no page — none of those buckets is promoted. A skill moving *out* of one of them into `engineering/` or `productivity/` gains a page; one moving the other way loses it.
 
-Because these pages are published on `aihero.dev`, **every link is absolute** — never a repo-relative path. A link to another skill points at `https://aihero.dev/skills-<name>`; a link into the repo points at its full `https://github.com/mattpocock/skills/...` URL. A relative link that works in the repo breaks once published.
+Because these pages are published on `aihero.dev`, **every link is absolute** — never a repo-relative path. A link to another skill points at `https://aihero.dev/skills-<name>`; a link into this distribution points at its full `https://github.com/Heelc/kx-skills/...` URL. A relative link that works in the repo breaks once published.
 
 There is no H1 — the published page takes its title from the slug.
 
@@ -19,14 +19,14 @@ Fill the template below. The **fixed frame** (Quickstart block, source link, `##
 Quickstart:
 
 ```bash
-npx skills add mattpocock/skills --skill=<name>
+npx skills add Heelc/kx-skills --skill=<name>
 ```
 
 ```bash
 npx skills update <name>
 ```
 
-[Source](https://github.com/mattpocock/skills/tree/main/skills/<bucket>/<name>)
+[Source](https://github.com/Heelc/kx-skills/tree/main/skills/<bucket>/<name>)
 
 ## What it does
 
@@ -36,12 +36,12 @@ One or two plain-language paragraphs. Lead with the skill's one-sentence job, th
 
 How and when you reach for the skill — two beats, both effectively always present:
 
-- **Invocation mode.** State whether you type it or the agent fires it. A user-invoked skill: "You invoke this by typing `/<name>` — the agent won't reach for it on its own." A model-invoked skill: "Type `/<name>`, or the agent reaches for it automatically when a task fits."
+- **Invocation mode.** 同时说明 Codex 与 Claude Code。仅显式调用："在 Codex 中输入 `$` 并选择 `kx-skills:<name>`；在 Claude Code 中输入 `/<name>`。该 skill 只能由用户显式启动。" 可隐式调用："在 Codex 中可输入 `$` 并选择 `kx-skills:<name>`，在 Claude Code 中可输入 `/<name>`；任务匹配时模型也可以隐式触发。"
 - **Trigger boundary.** The index entry: "reach for this when …". Where the skill is confusable with a sibling, add the other half — "for <X> instead, use [<sibling>](https://aihero.dev/skills-<sibling>)."
 
 ## Prerequisites
 
-Optional — include only when the skill needs something in place to be functional; omit the heading entirely otherwise. Covers: a **workspace it writes into** (a stateful skill like `grill-with-docs` writes `CONTEXT.md` and ADRs; `teach` builds a whole directory — say what it writes and where), **prior setup** (`triage`/`to-spec`/`to-tickets` need `setup-matt-pocock-skills` to have configured an issue tracker), or **repo-specific tooling**. A stateless skill that runs anywhere has no prerequisites — drop the section.
+Optional — include only when the skill needs something in place to be functional; omit the heading entirely otherwise. Covers: a **workspace it writes into** (a stateful skill like `grill-with-docs` writes `CONTEXT.md` and ADRs; `teach` builds a whole directory — say what it writes and where), **prior setup** (`triage`/`to-spec`/`to-tickets` need `setup-kx-skills` to have configured an issue tracker), or **repo-specific tooling**. A stateless skill that runs anywhere has no prerequisites — drop the section.
 
 ## <free-form middle>
 
@@ -57,9 +57,9 @@ Optional. A short, checkable list of the observable signals that tell the reader
 
 Always present. Situate the skill in the system in a sentence or two:
 
-- **Role.** Name it: a **chain step** (`grill-with-docs → to-spec → to-tickets → implement → code-review`), a **run-once setup** (`setup-matt-pocock-skills`), **periodic maintenance** (`improve-codebase-architecture`, "every few days"), or a **reach-for-it-anytime standalone** (`diagnosing-bugs`, `prototype`, `handoff`). A standalone's map is one honest sentence — far better than omitting the section.
+- **Role.** Name it: a **chain step** (`grill-with-docs → to-spec → to-tickets → implement → code-review`), a **run-once setup** (`setup-kx-skills`), **periodic maintenance** (`improve-codebase-architecture`, "every few days"), or a **reach-for-it-anytime standalone** (`diagnosing-bugs`, `prototype`, `handoff`). A standalone's map is one honest sentence — far better than omitting the section.
 - **Neighbours.** The one or two siblings that matter, each with a because-clause, linked absolutely.
-- **The map.** Point to [ask-matt](https://aihero.dev/skills-ask-matt), the router over the whole set, so this page stays a node and never has to redraw the graph.
+- **The map.** Point to [ask-kx](https://aihero.dev/skills-ask-kx), the router over the whole set, so this page stays a node and never has to redraw the graph.
 
 </page-template>
 
@@ -75,7 +75,7 @@ Always present. Situate the skill in the system in a sentence or two:
 - The Quickstart block and source link name the correct bucket and skill; the update line names the skill.
 - `## What it does` states the defining constraint, as plain prose rather than a labelled aside.
 - `## When to reach for it` states invocation mode and the trigger boundary.
-- `## Where it fits` names the role and links to `ask-matt`.
+- `## Where it fits` names the role and links to `ask-kx`.
 - A prerequisite (workspace, prior setup, tooling) is stated where one exists, and the section is absent where none does.
 - The middle surfaces the leading word.
 - Every link is absolute, and every one resolves.
