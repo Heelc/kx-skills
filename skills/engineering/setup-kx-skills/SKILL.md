@@ -21,7 +21,7 @@ This is a prompt-driven skill, not a deterministic script. Explore, present what
 Look at the current repo to understand its starting state. Read whatever exists; don't assume:
 
 - `git remote -v` and `.git/config` — is this a GitHub repo? Which one?
-- `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Is there already an `## Agent skills` section in either?
+- `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Are they **the same file** (one a symlink to the other, or the same inode), **two independent files**, or is **only one** present? Is there already an `## Agent skills` section in either?
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/` — does this skill's prior output already exist?
@@ -65,21 +65,23 @@ Offer **multi-context** — a root `CONTEXT-MAP.md` pointing to per-context `CON
 Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
+- Whether to unify the two root instruction files into a single source of truth so both harnesses read the same config (see step 4) — surface this recommendation here so the user decides before anything is written
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
 
 Let them edit before writing.
 
 ### 4. Write
 
-**Pick the file to edit:**
+**先定单一事实来源（single source of truth）。** Claude Code 读 `CLAUDE.md`，Codex 读 `AGENTS.md`。若两者是各自独立的实体，同一份配置就要维护两次、迟早漂移。因此本 skill 的推荐姿态是：**让两个名字指向同一份文件**（其中一个做成另一个的 symlink），一次编辑两端都读到。这样用户不必在每个项目里手动同步。
 
-- 先识别当前 harness：Codex 的权威文件是 `AGENTS.md`，Claude Code 的权威文件是 `CLAUDE.md`；无法判断时先询问用户。
-- 如果当前 harness 的权威文件不存在，展示完整草稿并请求创建它。即使另一端文件已经存在，也不能只修改另一端文件来代替。
-- 如果两个名称指向同一个文件（例如其中一个是 symlink），只编辑共享目标一次。
-- 如果两个文件独立存在，只编辑当前 harness 的权威文件；展示草稿并询问是否同步到另一份，绝不静默同时修改。
-- 如果两个文件都不存在，默认创建当前 harness 的权威文件；写入前仍需展示草稿并确认。
+按探索出的文件关系分情况处理。**建 symlink、合并两份、创建第二份独立文件，都必须先展示具体方案（涉及的文件、命令、写入内容）并取得用户明确确认，绝不静默执行；** 也始终保留权威文件中已有的用户指令：
 
-保留权威文件中已有的用户指令。创建第二份独立文件或同步另一端文件都需要用户明确确认。
+- **两个名字已指向同一文件**（其一是 symlink，或同一 inode）：理想状态，无需改动结构。只编辑那一份共享目标一次。
+- **只有一个文件存在**：编辑它写入配置块；然后**推荐**为缺失的另一个名字建一个指向它的 symlink（`ln -s <已存在的实体> <另一个名字>`，方向以已存在的实体为准），让另一端零维护地读到同一份。用户同意则建立；拒绝则维持单份，并明确告知另一端读不到这份配置。
+- **两个文件都不存在**：默认创建 `CLAUDE.md` 作为实体（写入前展示草稿并确认），并在同一步**推荐**建 `AGENTS.md -> CLAUDE.md` 的 symlink，使 Codex 也读到。
+- **两个独立文件都存在**：**推荐**收敛为单一源——把非权威那份中 `## Agent skills` 以外的用户内容并入权威份，再用指向权威份的 symlink 替换非权威份。这一步有覆盖风险，需逐项确认。用户若不愿合并，退回到「只编辑当前 harness 的权威文件，并把这段 block 原样同步进另一份」，绝不静默同时改。
+
+**Symlink 不可用时的退路**（如 Windows 对 symlink 支持差，或用户明确拒绝 symlink）：保留两个独立文件，把 `## Agent skills` 这段**完全相同地**写进两者，并提醒用户此后需手动保持两份一致。
 
 If an `## Agent skills` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
 

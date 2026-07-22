@@ -37,7 +37,7 @@ It leads each with a recommended answer you can accept in a word, and skips what
 - **Triage labels** — asked only if the `triage` skill is installed, and then just: keep the default labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`)? Say no only if your tracker already uses other names, so `triage` applies real ones instead of creating duplicates.
 - **Domain docs** — assumed single-context (one `CONTEXT.md` + `docs/adr/` at the root), which fits almost every repo; it only raises a multi-context map when it spots monorepo signals.
 
-输出包括 `docs/agents/issue-tracker.md`、`domain.md`，以及安装了 `triage` 时的 `triage-labels.md`。Codex 始终以 `AGENTS.md` 为权威文件，Claude Code 始终以 `CLAUDE.md` 为权威文件；权威文件缺失时会先展示草稿并请求创建。若两份独立文件并存，skill 会询问是否同步，不会静默同时修改。
+输出包括 `docs/agents/issue-tracker.md`、`domain.md`，以及安装了 `triage` 时的 `triage-labels.md`。此外它会写一段 `## Agent skills` 配置到根指令文件——Claude Code 读 `CLAUDE.md`，Codex 读 `AGENTS.md`。由于两端读不同文件，skill 会主动建议把两者统一为**单一事实来源**：把其中一个做成另一个的 symlink，一次编辑两端都读到，你不必在每个项目里手动同步（symlink 不可用时，如 Windows，则退回到两份内容保持一致）。建 symlink、合并两份或创建文件都会先展示方案并征得你确认，绝不静默执行。
 
 ## It's working if
 
